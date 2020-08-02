@@ -5,13 +5,15 @@
 </template>
 
 <script>
+import emitter from "@/mixin/index.js";
 export default {
   inheritAttrs: false,
   props: ["type", "value"],
+  mixins: [emitter],
   methods: {
     inputEvent(e) {
       this.$emit("input", e.target.value);
-      this.$parent.$emit("validate");
+      this.dispatch("RFormItem");
     },
   },
 };

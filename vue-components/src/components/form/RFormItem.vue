@@ -9,6 +9,7 @@
 <script>
 import Validator from "async-validator";
 export default {
+  componentName: "RFormItem",
   inject: ["form"],
   props: {
     label: {

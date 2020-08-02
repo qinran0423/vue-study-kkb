@@ -6,6 +6,7 @@
 
 <script>
 export default {
+  componentName: "RForm",
   provide() {
     return {
       form: this,
