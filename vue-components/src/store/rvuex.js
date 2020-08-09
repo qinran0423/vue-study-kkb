@@ -14,11 +14,9 @@ class Store {
     let store = this
     Object.keys(this._getters).forEach(item => {
       const fn = store._getters[item]
-      console.log(fn)
       computed[item] = function () {
         return fn(store.state)
       }
-      console.log(computed)
       Object.defineProperty(store.getters, item, {
         get: () => store._vm[item]
       })
