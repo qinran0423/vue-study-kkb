@@ -14,6 +14,7 @@
     </div>
   </body>
   <script>
+    // 创建实例
     new Vue({
       el: "#app",
       data: {
@@ -23,11 +24,20 @@
       mounted() {
         this.foo = 1;
         console.log("1: ", 1);
-        this.name = "aaa";
-        // this.foo = 2;
-        // console.log("2: ", 2);
-        // this.foo = 3;
-        // console.log("3: ", 3);
+        this.foo = 2;
+        console.log("2: ", 2);
+        this.foo = 3;
+        console.log("3: ", 3);
+
+        console.log("p1.innerHTML:" + p1.innerHTML);
+
+        Promise.resolve().then(() => {
+          console.log("Promise:" + p1.innerHTML);
+        });
+
+        this.$nextTick(() => {
+          console.log("nextTick:" + p1.innerHTML);
+        });
       },
     });
   </script>
