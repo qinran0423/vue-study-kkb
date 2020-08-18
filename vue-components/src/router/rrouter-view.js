@@ -6,7 +6,6 @@ export default {
     let parent = this.$parent
     while(parent ) {
       const vnodeData = parent.$vnode && parent.$vnode.data
-      console.log(vnodeData);
       if(vnodeData) {
         if(vnodeData.routerView) {
           depth ++
