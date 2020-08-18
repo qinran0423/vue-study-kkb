@@ -1,5 +1,8 @@
 <template>
   <div>
+    <p @click="$store.commit('addcounter', 1)">counter : {{$store.state.counter}}</p>
+    <p @click="$store.dispatch('addcounter', 2)">counter : {{$store.state.counter}}</p>
+    <p>{{$store.getters.doublecounter}}</p>
     <r-form :model="form" :rules="rules" ref="form">
       <r-form-item label="账户" prop="name">
         <r-input v-model="form.name" placeholder="请输入账户" />
