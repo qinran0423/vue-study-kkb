@@ -164,6 +164,7 @@ function callActivatedHooks(queue) {
 export function queueWatcher(watcher: Watcher) {
   // 获取watcher 的id
   const id = watcher.id
+  // 每个组件只会有一个watcher
   // 判断是否已经入队， 去重
   if (has[id] == null) {
     has[id] = true
@@ -190,6 +191,7 @@ export function queueWatcher(watcher: Watcher) {
       // 如果没有在等待状态
       // 使用nextTick 将flushSchedulerQueue 入队
       // 尝试异步方式将该函数放入微任务队列中
+      //flushSchedulerQueue 就是通知watcher去干活的（run）
       nextTick(flushSchedulerQueue)
     }
   }

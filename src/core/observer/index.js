@@ -157,6 +157,7 @@ export function defineReactive (
   Object.defineProperty(obj, key, {
     enumerable: true,
     configurable: true,
+    //闭包，使用obj里面的值一直存储
     get: function reactiveGetter () {
       const value = getter ? getter.call(obj) : val
       if (Dep.target) {
@@ -170,6 +171,7 @@ export function defineReactive (
       }
       return value
     },
+    // 数据改变时候触发
     set: function reactiveSetter (newVal) {
       const value = getter ? getter.call(obj) : val
       /* eslint-disable no-self-compare */
@@ -188,6 +190,7 @@ export function defineReactive (
         val = newVal
       }
       childOb = !shallow && observe(newVal)
+      // 触发dep的notify 去更新watcher
       dep.notify()
     }
   })

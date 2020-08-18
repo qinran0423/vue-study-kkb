@@ -16,6 +16,7 @@ function flushCallbacks() {
   const copies = callbacks.slice(0)
   callbacks.length = 0
   for (let i = 0; i < copies.length; i++) {
+    // 让cb 执行
     copies[i]()
   }
 }
@@ -90,6 +91,7 @@ if (typeof Promise !== 'undefined' && isNative(Promise)) {
 // this.$nextTick(() => {})
 export function nextTick(cb?: Function, ctx?: Object) {
   let _resolve
+  // cb : 有可能时flushSchedulerQueue， 也有可能时  this.$nextTick(() => {})传入的cb
   // 用户传递的回调函数会被放入callbacks里
   // 前面的刷新函数（flushSchedulerQueue）就是执行callback中的所有回调
   callbacks.push(() => {
