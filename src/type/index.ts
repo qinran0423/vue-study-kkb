@@ -12,3 +12,17 @@ type Select = {
 
 export type FeatureSelect = Feature & Select
 
+
+
+// 接口
+export interface Person {
+  firstName: string,
+  lastName: string
+}
+
+
+// 泛型
+export interface Result<T> {
+  ok: 0|1,
+  data: T
+}

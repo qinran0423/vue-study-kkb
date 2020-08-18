@@ -12,7 +12,7 @@
 
 <script lang="ts">
 import { Component, Prop, Vue } from 'vue-property-decorator';
-import {  FeatureSelect } from '@/type'
+import {  FeatureSelect, Person,  Result} from '@/type'
 
 // 函数重载
 // 重载1
@@ -59,6 +59,25 @@ export default class HelloWorld extends Vue {
     inp.value = ''
   }
 
+  greeting(person: Person): string {
+    return `Hello, ${person.firstName}   ${person.lastName}`
+  }
+
+  getResult<T>(data: T): Promise<Result<T>> {
+    return Promise.resolve({
+      ok: 1,
+      data
+    })
+  }
+
+  async created() {
+    console.log(this.greeting({
+       firstName: 'randy',
+       lastName: '秦'
+     }))
+    //  const result = await this.$axios.get<FeatureSelect[]>('/api/list')
+    //  console.log(result.data)
+  }
 }
 </script>
 
