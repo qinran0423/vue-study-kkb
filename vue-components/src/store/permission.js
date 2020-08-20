@@ -15,9 +15,10 @@ const mutations = {
 
 const actions = {
   // 路由生成： 在得到用户角色后第一时间调用
-  generateRoutes({commit}, roles) {
-    return new Promise( resolve => {
+  generateRoutes({ commit }, roles) {
+    return new Promise(resolve => {
       // 根据角色做过滤处理
+
       const accessedRoutes = filterAsyncRoutes(asyncRoutes, roles);
       commit("setRoutes", accessedRoutes);
       resolve(accessedRoutes);
@@ -31,15 +32,16 @@ export function filterAsyncRoutes(routes, roles) {
   routes.forEach(route => {
     const tmp = { ...route }
     // 如果用户有访问权限则加入结果路由表
-    if(hasPermission(roles, tmp)) {
+    if (hasPermission(roles, tmp)) {
       //如果存在子路由则递归过滤
-      if(tmp) {
+      if (tmp) {
         tmp.children = filterAsyncRoutes(tmp.children, roles);
       }
       res.push(tmp)
     }
-    
+
   })
+  return res;
 }
 
 
@@ -49,9 +51,16 @@ export function filterAsyncRoutes(routes, roles) {
  * @param {*} route 带判定的路由
  */
 function hasPermission(roles, route) {
-  if(route.meta && route.meta.roles) {
+  if (route.meta && route.meta.roles) {
     return roles.some(role => route.meta.roles.includes(role))
   } else {
-    return true
+    return false
   }
+}
+
+
+export default {
+  state,
+  mutations,
+  actions
 }
