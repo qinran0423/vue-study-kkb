@@ -16,7 +16,17 @@ export default {
     };
   },
   methods: {
-    login() {},
+    login() {
+      this.$store.dispatch('user/login', {username: this.username})
+      .then(() => {
+        this.$router.push({
+          path: this.$route.query.redirect || '/'
+        })
+      })
+      .catch(error => {
+        alert(error)
+      })
+    },
   },
 };
 </script>
