@@ -55,6 +55,7 @@ export function initState (vm: Component) {
   } else {
     observe(vm._data = {}, true /* asRootData */)
   }
+  // 初始化计算属性
   if (opts.computed) initComputed(vm, opts.computed)
   if (opts.watch && opts.watch !== nativeWatch) {
     initWatch(vm, opts.watch)
@@ -172,8 +173,11 @@ function initComputed (vm: Component, computed: Object) {
   // computed properties are just getters during SSR
   const isSSR = isServerRendering()
 
+  // 遍历计算属性中的key
   for (const key in computed) {
+    // 获取计算属性中key 对应的方法
     const userDef = computed[key]
+    // 如果是函数 直接返回函数 也会有{get: () {}, set() {}}的情况
     const getter = typeof userDef === 'function' ? userDef : userDef.get
     if (process.env.NODE_ENV !== 'production' && getter == null) {
       warn(
@@ -184,17 +188,23 @@ function initComputed (vm: Component, computed: Object) {
 
     if (!isSSR) {
       // create internal watcher for the computed property.
+      // 计算属性 computedWatcherOptions = {lazy: true}
+      // 每个computed都会创建一个watcher 
+      // watcher 用来存储计算值，判断是否需要重新计算
       watchers[key] = new Watcher(
         vm,
         getter || noop,
         noop,
         computedWatcherOptions
       )
+      // getter : computed[key]
+      // new watcher(vm， getter, {lazy:true})
     }
 
     // component-defined computed properties are already defined on the
     // component prototype. We only need to define computed properties defined
     // at instantiation here.
+    // 判断是否有重名的属性
     if (!(key in vm)) {
       defineComputed(vm, key, userDef)
     } else if (process.env.NODE_ENV !== 'production') {
@@ -214,6 +224,7 @@ export function defineComputed (
 ) {
   const shouldCache = !isServerRendering()
   if (typeof userDef === 'function') {
+    // 包装get函数，主要用户判断计算属性缓存结果是否有效
     sharedPropertyDefinition.get = shouldCache
       ? createComputedGetter(key)
       : createGetterInvoker(userDef)
@@ -235,14 +246,19 @@ export function defineComputed (
       )
     }
   }
+  // 代理到vm实例上
   Object.defineProperty(target, key, sharedPropertyDefinition)
-}
+} 
 
 function createComputedGetter (key) {
   return function computedGetter () {
+    // 获取到相应key的computed-watcher
     const watcher = this._computedWatchers && this._computedWatchers[key]
     if (watcher) {
+      // 只有在dirty true的时候才进入
+      //如果 computed 依赖的数据变化，dirty 会变成true
       if (watcher.dirty) {
+        // 从而重新计算，然后更新缓存值 watcher.value
         watcher.evaluate()
       }
       if (Dep.target) {

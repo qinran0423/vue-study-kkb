@@ -58,9 +58,11 @@ export default class Watcher {
     if (options) {
       this.deep = !!options.deep
       this.user = !!options.user
-      this.lazy = !!options.lazy
+      this.lazy = !!options.lazy // computed: 传入 {lazy: true}
       this.sync = !!options.sync
       this.before = options.before
+      //computed 新建 watcher 的时候，传入 lazy
+      //没错，作用是把计算结果缓存起来，而不是每次使用都要重新计算 而这里呢，还把 lazy 赋值给了 dirty，为什么呢？因为  lazy 表示一种固定描述，不可改变，表示这个 watcher 需要缓存而 dirty 表示缓存是否可用，如果为 true，表示缓存脏了，需要重新计算，否则不用dirty 默认是 false 的，而 lazy 赋值给 dirty，就是给一个初始值，表示 你控制缓存的任务开始了所以记住，【dirty】 是真正的控制缓存的关键，而 lazy 只是起到一个开启的作用
     } else {
       this.deep = this.user = this.lazy = this.sync = false
     }
@@ -76,6 +78,7 @@ export default class Watcher {
       ? expOrFn.toString()
       : ''
     // parse expression for getter
+    // 用户设置的computed-getter，存放到watcher.getter中，用于后面的计算
     if (typeof expOrFn === 'function') {
       this.getter = expOrFn
     } else {
@@ -90,6 +93,8 @@ export default class Watcher {
         )
       }
     }
+    // watcher.value 存放计算结果，但是这个有个条件，因为lazy的原因，不会新建实例并马上读取值
+    // 但是通过get方法可以读取值
     this.value = this.lazy
       ? undefined
       : this.get()
@@ -99,10 +104,12 @@ export default class Watcher {
    * Evaluate the getter, and re-collect dependencies.
    */
   get() {
+    // 改变Dep.target
     pushTarget(this)
     let value
     const vm = this.vm
     try {
+      // getter就是传入watcher的回调
       value = this.getter.call(vm, vm)
     } catch (e) {
       if (this.user) {
@@ -116,6 +123,7 @@ export default class Watcher {
       if (this.deep) {
         traverse(value)
       }
+      // 恢复前一个watcher
       popTarget()
       this.cleanupDeps()
     }
@@ -209,7 +217,9 @@ export default class Watcher {
    * This only gets called for lazy watchers.
    */
   evaluate() {
+    //  重新计算结果
     this.value = this.get()
+    // 执行完更新函数之后，立即重置标志位
     this.dirty = false
   }
 

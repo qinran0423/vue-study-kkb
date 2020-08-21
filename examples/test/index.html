@@ -7,16 +7,32 @@
     <script src="../../dist/vue.js"></script>
   </head>
   <body>
-    <div id="app">{{obj.foo}}</div>
+    <div id="app">
+      <h3 @click="dbclick">{{count}}</h3>
+      <h4>{{double}}</h4>
+    </div>
   </body>
   <script>
     new Vue({
       el: "#app",
       data: {
-        obj: {
-          foo: "foo",
-        },
+        count: 1
       },
+      computed: {
+        double() {
+          return this.count * 2
+        }
+      },
+      methods: {
+        dbclick() {
+          this.count ++
+        }
+      },
+      mounted() {
+        console.log(this)
+      },
+
+
     });
   </script>
 </html>
