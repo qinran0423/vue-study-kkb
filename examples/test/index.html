@@ -23,13 +23,15 @@
           return this.count * 2
         }
       },
+      // watch: {
+      //   count(newVal, oldVal) {
+      //     console.log(newVal, oldVal);
+      //   }
+      // },
       methods: {
         dbclick() {
           this.count ++
         }
-      },
-      mounted() {
-        console.log(this)
       },
 
 

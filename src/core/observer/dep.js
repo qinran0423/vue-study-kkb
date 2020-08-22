@@ -19,11 +19,11 @@ export default class Dep {
     this.id = uid++
     this.subs = []
   }
-
+  // 收集依赖
   addSub(sub: Watcher) {
     this.subs.push(sub)
   }
-
+  // 删除依赖
   removeSub(sub: Watcher) {
     remove(this.subs, sub)
   }
@@ -43,6 +43,7 @@ export default class Dep {
       // order
       subs.sort((a, b) => a.id - b.id)
     }
+    // 循环触发收集到的依赖
     for (let i = 0, l = subs.length; i < l; i++) {
       // watcher update
       subs[i].update()
