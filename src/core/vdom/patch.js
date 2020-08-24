@@ -130,7 +130,7 @@ export function createPatchFunction (backend) {
   function createElm (
     vnode,
     insertedVnodeQueue,
-    parentElm,
+    parentElm, // 初始化的时候  parentElm: vm.$el
     refElm,
     nested,
     ownerArray,
@@ -170,7 +170,6 @@ export function createPatchFunction (backend) {
           )
         }
       }
-
       vnode.elm = vnode.ns
         ? nodeOps.createElementNS(vnode.ns, tag)
         : nodeOps.createElement(tag, vnode)
