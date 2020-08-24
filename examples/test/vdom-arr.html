@@ -20,7 +20,7 @@
             data: { arr: ['A','B','C','D'] },
             mounted() {
                 setTimeout(() => {
-                    this.arr.push(4)
+                    // this.arr.push(4)
                     // A B C D
                     // A E B C D
 
@@ -61,7 +61,7 @@
 
                     // 创建D，并追加
         
-                    // this.arr.splice(1, 0, 'E')
+                    this.arr.splice(1, 0, 'E')
                 }, 1000);
             }
         });
