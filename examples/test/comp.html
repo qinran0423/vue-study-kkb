@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Vue源码剖析</title>
+    <script src="../../dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="demo">
+        <h1>Vue 组件化机制</h1>
+        <comp></comp>
+    </div>
+    <script>
+      Vue.component('comp',  {
+        template: '<div>I am comp</div>'
+      })
+      // 创建实例
+      const app = new Vue({
+        el: '#demo',
+      });
+      console.log(app.$options.render)
+      // ƒ anonymous(
+      // ) {
+      // with(this){return _c('div',{attrs:{"id":"demo"}},[_c('h1',[_v("Vue 组件化机制")]),_v(" "),_c('comp')],1)}
+      // }
+    </script>
+</body>
+
+</html>
